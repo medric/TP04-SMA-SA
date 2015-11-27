@@ -1,7 +1,12 @@
 
 public class Item {
 	private String label;
-
+	private Square currentSquare;
+	
+	public Item(String label) {
+		this.setLabel(label);
+	}
+	
 	public String getLabel() {
 		return label;
 	}
@@ -10,4 +15,12 @@ public class Item {
 		this.label = label;
 	}
 	
+	public void setCurrentSquare(Square currentSquare) {
+		this.currentSquare = currentSquare;
+		this.currentSquare.setObject(this);
+	}
+	
+	public Square getCurrentSquare() {
+		return this.currentSquare;
+	}
 }

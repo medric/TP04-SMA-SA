@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * @author medric
  *
@@ -39,7 +37,7 @@ public class Square {
 	public void setObject(Object _object) {
 		this.object = _object;
 	}
-	
+		
 	public boolean isFree() {
 		return this.object != null;
 	}
