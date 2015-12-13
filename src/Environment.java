@@ -141,8 +141,8 @@ public class Environment {
 
 		Random r = new Random();
 
-		int randI = r.nextInt(gridWidth - 1);
-		int randJ = r.nextInt(gridHeight - 1);
+		int randI = r.nextInt(gridWidth);
+		int randJ = r.nextInt(gridHeight);
 
 		return grid.get(randI).get(randJ);
 	}
@@ -161,9 +161,9 @@ public class Environment {
 					System.out.print(agent.getName());
 				} else if (Item.class.isInstance(grid.get(x).get(y).getObject())) {
 					Item item = (Item) square.getObject();
-					System.out.print(item.getLabel());
+					System.out.print(item.getLabel() + "      ");
 				} else {
-					System.out.print("Vide");
+					System.out.print("       ");
 				}
 			}
 			System.out.println();
