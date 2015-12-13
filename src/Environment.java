@@ -1,3 +1,4 @@
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -67,47 +68,33 @@ public class Environment {
 	}
 
 	public void placeAgents() {
-		// int cursor = 0;
 		for (Agent agent : agents) {
 
 			boolean placed = true;
 			while (placed) {
 				Square randomSquare = getRandomSquare();
 
-				if (randomSquare == null) {
+				if (randomSquare.getObject() == null) {
 					agent.setCurrentSquare(randomSquare);
 					randomSquare.setObject(agent);
 					placed = false;
 				}
 			}
-
-			// TODO : logique ? randomSquare.isFree ??
-			/*
-			 * while(randomSquare == null || randomSquare.isFree() && cursor <
-			 * this.getGridWidth() * this.getGridHeight()) { randomSquare =
-			 * getRandomSquare(); cursor++; }
-			 */
-
-			/*
-			 * if(randomSquare.isFree()) { randomSquare.setObject(agent);
-			 * agent.setCurrentSquare(randomSquare); }
-			 */
 		}
 	}
 
 	public void placeItems() {
-		int cursor = 0;
 		for (Item item : items) {
-			Square randomSquare = getRandomSquare();
 
-			while (randomSquare.isFree() && cursor < this.getGridWidth() * this.getGridHeight()) {
-				randomSquare = getRandomSquare();
-				cursor++;
-			}
+			boolean placed = true;
+			while (placed) {
+				Square randomSquare = getRandomSquare();
 
-			if (randomSquare.isFree()) {
-				randomSquare.setObject(item);
-				item.setCurrentSquare(randomSquare);
+				if (randomSquare.getObject() == null) {
+					item.setCurrentSquare(randomSquare);
+					randomSquare.setObject(item);
+					placed = false;
+				}
 			}
 		}
 	}
@@ -152,19 +139,12 @@ public class Environment {
 
 	private Square getRandomSquare() {
 
-		/*
-		 * int i = RANDOM_GENERATOR.nextInt(); int j =
-		 * RANDOM_GENERATOR.nextInt(); return grid.get(i).get(j);
-		 */
-
-		// int valeur = valeurMin + r.nextInt(valeurMax - valeurMin)
-
 		Random r = new Random();
 
 		int randI = r.nextInt(gridWidth - 1);
 		int randJ = r.nextInt(gridHeight - 1);
 
-		return (Square) grid.get(randI).get(randJ).getObject();
+		return grid.get(randI).get(randJ);
 	}
 
 	/**
