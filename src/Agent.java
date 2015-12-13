@@ -169,11 +169,11 @@ public class Agent {
 		return this.shortTermMemory.size() == shortTermMemorySize;
 	}
 
-	private String getName() {
+	public String getName() {
 		return name;
 	}
 
-	private void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 } 

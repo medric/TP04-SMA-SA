@@ -21,7 +21,7 @@ public class Environment {
 		grid = new ArrayList<ArrayList<Square>>();
 		this.initGrid();
 
-		agents = new ArrayList<Agent>();
+		setAgents(new ArrayList<Agent>());
 		this.initAgents(nbAgents);
 
 		items = new ArrayList<Item>();
@@ -49,7 +49,7 @@ public class Environment {
 		for (int i = 0; i < nbAgents; i++) {
 			String name = "Agent_" + i;
 			Agent agent = new Agent(this, 10, name);
-			agents.add(agent);
+			getAgents().add(agent);
 		}
 	}
 
@@ -68,7 +68,7 @@ public class Environment {
 	}
 
 	public void placeAgents() {
-		for (Agent agent : agents) {
+		for (Agent agent : getAgents()) {
 
 			boolean placed = true;
 			while (placed) {
@@ -150,8 +150,32 @@ public class Environment {
 	/**
 	 * Rendering the environment
 	 */
-	private void render() {
+	public void render() {
+		for (int y = 0; y < gridHeight; y++) {
+			for (int x = 0; x < gridWidth; x++) {
 
-		System.out.print("-----------------------------------Iteration suivante-----------------------------------");
+				Square square = grid.get(x).get(y);
+				System.out.print("(" + x + "," + y + ")");
+				if (Agent.class.isInstance(square.getObject())) {
+					Agent agent = (Agent) square.getObject();
+					System.out.print(agent.getName());
+				} else if (Item.class.isInstance(grid.get(x).get(y).getObject())) {
+					Item item = (Item) square.getObject();
+					System.out.print(item.getLabel());
+				} else {
+					System.out.print("Vide");
+				}
+			}
+			System.out.println();
+		}
+		System.out.print("---Iteration suivante---");
+	}
+
+	public ArrayList<Agent> getAgents() {
+		return agents;
+	}
+
+	public void setAgents(ArrayList<Agent> agents) {
+		this.agents = agents;
 	}
 }
