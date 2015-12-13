@@ -1,11 +1,10 @@
 import java.util.ArrayList;
 
-import core.Square;
-
 public class Agent {
 	private static final double K_PLUS = 0.1;
 	private static final double K_MINUS = 0.3;
 	
+	private String name;
 	private Environment environment;
 	private Square currentSquare;
 	private ArrayList<String> shortTermMemory;
@@ -22,7 +21,8 @@ public class Agent {
 		this.neighborhood = neighborhood;
 	}
 
-	public Agent(Environment environment, int shortTermMemorySize) {
+	public Agent(Environment environment, int shortTermMemorySize, String name) {
+		this.name = name;
 		this.setEnvironment(environment);
 		this.shortTermMemorySize = shortTermMemorySize;
 		this.shortTermMemory = new ArrayList<String>(shortTermMemorySize);
@@ -167,5 +167,13 @@ public class Agent {
 	
 	private boolean isShortMemoryFull() {
 		return this.shortTermMemory.size() == shortTermMemorySize;
+	}
+
+	private String getName() {
+		return name;
+	}
+
+	private void setName(String name) {
+		this.name = name;
 	}
 } 

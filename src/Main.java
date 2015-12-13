@@ -12,6 +12,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		// Init base
-		Environment environment = new Environment(50, 50, 20, 200);
+		//Environment environment = new Environment(50, 50, 20, 200);
+		new Environment(5, 5, 2, 2);
 	}
 }
