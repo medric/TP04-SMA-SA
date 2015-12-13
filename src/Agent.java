@@ -58,7 +58,7 @@ public class Agent {
 		} else if(neighbor.isFree()) { // If neighbor square is free try to leave Item in possession
 			leave(neighbor);
 		} 
-		// TODO : gestion pile mÃ©moire	
+		// TODO : gestion pile mémoire	
 		if(hasItemItemInPossession()) {
 			shortTermMemory.add(itemInPossession.getLabel());
 		} else {

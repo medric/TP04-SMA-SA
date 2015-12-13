@@ -34,10 +34,10 @@ public class Environment {
 	}
 
 	private void initGrid() {
-		for (int y = 0; y < gridHeight; y++) {
+		for (int i = 0; i < gridHeight; i++) {
 			ArrayList<Square> columns = new ArrayList<Square>(gridWidth);
-			for (int x = 0; x < gridWidth; x++) {
-				Square square = new Square(new Position(x, y));
+			for (int j = 0; j < gridWidth; j++) {
+				Square square = new Square(new Position(i, j));
 				square.setObject(null);
 				columns.add(square);
 			}
@@ -151,15 +151,15 @@ public class Environment {
 	 * Rendering the environment
 	 */
 	public void render() {
-		for (int y = 0; y < gridHeight; y++) {
-			for (int x = 0; x < gridWidth; x++) {
+		for (int i = 0; i < gridHeight; i++) {
+			for (int j = 0; j < gridWidth; j++) {
 
-				Square square = grid.get(x).get(y);
-				System.out.print("(" + x + "," + y + ")");
+				Square square = grid.get(j).get(i);
+				System.out.print("(" + j + "," + i + ")");
 				if (Agent.class.isInstance(square.getObject())) {
 					Agent agent = (Agent) square.getObject();
 					System.out.print(agent.getName());
-				} else if (Item.class.isInstance(grid.get(x).get(y).getObject())) {
+				} else if (Item.class.isInstance(square.getObject())) {
 					Item item = (Item) square.getObject();
 					System.out.print(item.getLabel() + "      ");
 				} else {
@@ -168,7 +168,7 @@ public class Environment {
 			}
 			System.out.println();
 		}
-		System.out.print("---Iteration suivante---");
+		//System.out.print("---Iteration suivante---");
 	}
 
 	public ArrayList<Agent> getAgents() {
