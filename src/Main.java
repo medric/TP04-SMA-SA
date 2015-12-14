@@ -15,7 +15,7 @@ public class Main {
 		//Environment environment = new Environment(50, 50, 20, 200);
 		Environment environment = new Environment(5, 5, 2, 2);
 		
-		for (int k = 0; k < 10; k++) {
+		for (int k = 0; k < 3; k++) {
 			Random rand = new Random();
 			int randStack = rand.nextInt(environment.getAgents().size());
 			environment.applyPerception(environment.getAgents().get(randStack));

@@ -37,7 +37,7 @@ public class Environment {
 		for (int i = 0; i < gridHeight; i++) {
 			ArrayList<Square> columns = new ArrayList<Square>(gridWidth);
 			for (int j = 0; j < gridWidth; j++) {
-				Square square = new Square(new Position(i, j));
+				Square square = new Square(new Position(j, i));
 				square.setObject(null);
 				columns.add(square);
 			}
@@ -154,7 +154,7 @@ public class Environment {
 		for (int i = 0; i < gridHeight; i++) {
 			for (int j = 0; j < gridWidth; j++) {
 
-				Square square = grid.get(j).get(i);
+				Square square = grid.get(i).get(j);
 				System.out.print("(" + j + "," + i + ")");
 				if (Agent.class.isInstance(square.getObject())) {
 					Agent agent = (Agent) square.getObject();
