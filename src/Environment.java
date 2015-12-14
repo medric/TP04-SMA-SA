@@ -1,9 +1,7 @@
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Environment {
-	public static Random RANDOM_GENERATOR = new Random();
 	private ArrayList<ArrayList<Square>> grid;
 	private ArrayList<Agent> agents;
 	private ArrayList<Item> items;
@@ -66,6 +64,9 @@ public class Environment {
 
 	public void moveAgent(Square destination) {
 	}
+	
+	public void move() {
+	}
 
 	public void placeAgents() {
 		for (Agent agent : getAgents()) {
@@ -97,10 +98,6 @@ public class Environment {
 				}
 			}
 		}
-	}
-
-	public void move() {
-
 	}
 
 	public int getGridWidth() {
