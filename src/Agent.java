@@ -53,13 +53,21 @@ public class Agent {
 	public void move() {
 		Square neighbor = getRandomNeighbor();
 
+		// If place is free
+		if(neighbor.getObject() == null) {
+			this.environment.moveAgent(this, neighbor);
+		}
+		
 		// If Item
-		if (neighbor.getObject() != null && neighbor.getObject().getClass().equals(Item.class)) {
+		/*if (neighbor.getObject() != null && neighbor.getObject().getClass().equals(Item.class)) {
 			take(neighbor);
 		} else if (neighbor.isFree()) { // If neighbor square is free try to
 										// leave Item in possession
 			leave(neighbor);
-		}
+		}*/
+		
+		// If Agent ? ne rien faire ?
+		
 		// TODO : gestion pile mémoire
 		if (hasItemItemInPossession()) {
 			shortTermMemory.add(itemInPossession.getLabel());
@@ -78,7 +86,7 @@ public class Agent {
 
 			if (rand <= probTake) {
 				this.setItemInPossession((Item) destination.getObject());
-				environment.move();
+				//environment.move();
 			}
 		}
 	}
@@ -93,7 +101,7 @@ public class Agent {
 
 			if (rand <= probLeave) {
 				this.setItemInPossession(null);
-				environment.move();
+				//environment.move();
 			}
 		}
 	}

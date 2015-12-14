@@ -60,14 +60,25 @@ public class Environment {
 
 	public void applyPerception(Agent agent) {
 		agent.setNeighborhood(getNeighbors(agent.getCurrentSquare()));
+		agent.move();
 	}
 
-	public void moveAgent(Square destination) {
-	}
-	
-	public void move() {
+	public void moveAgent(Agent agent, Square destination) {
+		int nextX = destination.getPosition().getX();
+		int nextY = destination.getPosition().getY();
+		
+		int currentX = agent.getCurrentSquare().getPosition().getX();
+		int currentY = agent.getCurrentSquare().getPosition().getY();
+		
+		this.grid.get(currentX).get(currentY).setObject(null);
+		
+		agent.setCurrentSquare(destination);
+		this.grid.get(nextX).get(nextY).setObject(agent);	
 	}
 
+	/**
+	 * Initialisation : Positionnement des agents sur la grille
+	 */
 	public void placeAgents() {
 		for (Agent agent : getAgents()) {
 
@@ -84,6 +95,9 @@ public class Environment {
 		}
 	}
 
+	/**
+	 * Initialisation : Positionnement des objets sur la grille
+	 */
 	public void placeItems() {
 		for (Item item : items) {
 
