@@ -45,8 +45,7 @@ public class Environment {
 
 	private void initAgents(int nbAgents) {
 		for (int i = 0; i < nbAgents; i++) {
-			String name = "Agent_" + i;
-			Agent agent = new Agent(this, name);
+			Agent agent = new Agent(this, i);
 			getAgents().add(agent);
 		}
 	}
@@ -66,25 +65,25 @@ public class Environment {
 	public void moveAgent(Agent agent, Square destination) {
 		int nextX = destination.getPosition().getX();
 		int nextY = destination.getPosition().getY();
-		
+
 		int currentX = agent.getCurrentSquare().getPosition().getX();
 		int currentY = agent.getCurrentSquare().getPosition().getY();
-		
+
 		this.grid.get(currentY).get(currentX).setObject(null);
-		
+
 		agent.setCurrentSquare(destination);
-		this.grid.get(nextY).get(nextX).setObject(agent);	
+		this.grid.get(nextY).get(nextX).setObject(agent);
 	}
-	
+
 	public void takeItem(Agent agent, Item item) {
 		agent.setItemInPossession(item);
 	}
-	
+
 	public void leaveItem(Agent agent, Square destination) {
 		int nextX = destination.getPosition().getX();
 		int nextY = destination.getPosition().getY();
-		this.grid.get(nextY).get(nextX).setObject(agent.getItemInPosition());	
-		
+		this.grid.get(nextY).get(nextX).setObject(agent.getItemInPosition());
+
 		agent.setItemInPossession(null);
 	}
 
@@ -164,8 +163,6 @@ public class Environment {
 
 		Random r = new Random();
 
-		
-		
 		int randI = r.nextInt(gridWidth);
 		int randJ = r.nextInt(gridHeight);
 
@@ -180,20 +177,32 @@ public class Environment {
 			for (int j = 0; j < gridWidth; j++) {
 
 				Square square = grid.get(i).get(j);
-				System.out.print("(" + j + "," + i + ")");
+
+				String displayJ = "";
+				String displayI = "";
+
+				if (gridWidth >= 10) {
+					displayJ = (j < 10) ? "0" + j : Integer.toString(j);
+					displayI = (i < 10) ? "0" + i : Integer.toString(i);
+				} else {
+					displayJ = Integer.toString(j);
+					displayI = Integer.toString(i);
+				}
+
+				System.out.print("(" + displayJ + "," + displayI + ")");
 				if (Agent.class.isInstance(square.getObject())) {
 					Agent agent = (Agent) square.getObject();
 					System.out.print(agent.getName());
 				} else if (Item.class.isInstance(square.getObject())) {
 					Item item = (Item) square.getObject();
-					System.out.print(item.getLabel() + "      ");
+					System.out.print(item.getLabel() + "    ");
 				} else {
-					System.out.print("       ");
+					System.out.print("     ");
 				}
 			}
 			System.out.println();
 		}
-		//System.out.print("---Iteration suivante---");
+		// System.out.print("---Iteration suivante---");
 	}
 
 	public ArrayList<Agent> getAgents() {

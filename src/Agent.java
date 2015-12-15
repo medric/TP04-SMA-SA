@@ -63,9 +63,17 @@ public class Agent {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public void setNameWithNum(int num) {
+		if(num < 10) {
+			this.name = "Ag_0" + num;
+		} else {
+			this.name = "Ag_" + num;
+		}
+	}
 
-	public Agent(Environment environment, String name) {
-		this.name = name;
+	public Agent(Environment environment, int numAgent) {
+		this.setNameWithNum(numAgent);
 		this.setEnvironment(environment);
 		this.neighborhood = new ArrayList<Square>(4);
 		this.shortTermMemory = new Stack<String>();
