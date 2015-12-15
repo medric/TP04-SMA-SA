@@ -70,10 +70,10 @@ public class Environment {
 		int currentX = agent.getCurrentSquare().getPosition().getX();
 		int currentY = agent.getCurrentSquare().getPosition().getY();
 		
-		this.grid.get(currentX).get(currentY).setObject(null);
+		this.grid.get(currentY).get(currentX).setObject(null);
 		
 		agent.setCurrentSquare(destination);
-		this.grid.get(nextX).get(nextY).setObject(agent);	
+		this.grid.get(nextY).get(nextX).setObject(agent);	
 	}
 
 	/**

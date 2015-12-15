@@ -69,11 +69,11 @@ public class Agent {
 		// If Agent ? ne rien faire ?
 		
 		// TODO : gestion pile mémoire
-		if (hasItemItemInPossession()) {
+		/*if (hasItemItemInPossession()) {
 			shortTermMemory.add(itemInPossession.getLabel());
 		} else {
 			shortTermMemory.add("0");
-		}
+		}*/
 	}
 
 	public void take(Square destination) {
