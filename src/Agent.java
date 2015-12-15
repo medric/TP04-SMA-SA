@@ -13,7 +13,6 @@ public class Agent {
 	private Stack<String> shortTermMemory;
 	private ArrayList<Square> neighborhood;
 	private Item itemInPossession;
-	private int moveStep;
 
 	public ArrayList<Square> getNeighborhood() {
 		return neighborhood;
@@ -66,16 +65,8 @@ public class Agent {
 		}
 
 		// Si le voisin est null
-		if (neighbor.getClass() == null) {
+		if (neighbor.getObject() == null) {
 			leave(neighbor);
-			
-			/*
-			// Si on a un item en main
-			if (this.itemInPossession != null) {
-				leave(neighbor);
-			} else {
-				this.environment.moveAgent(this, neighbor);
-			}*/
 		}
 
 		if (isShortMemoryFull()) {
@@ -121,6 +112,8 @@ public class Agent {
 			} else {
 				this.environment.moveAgent(this, destination);
 			}
+		} else {
+			this.environment.moveAgent(this, destination);
 		}
 	}
 
@@ -151,14 +144,6 @@ public class Agent {
 
 	public boolean hasItemInPossession() {
 		return this.itemInPossession != null;
-	}
-
-	public int getMoveStep() {
-		return moveStep;
-	}
-
-	public void setMoveStep(int moveStep) {
-		this.moveStep = moveStep;
 	}
 
 	private double getProportionOfItemInShortMemory(String label) {
