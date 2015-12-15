@@ -79,6 +79,14 @@ public class Environment {
 	public void takeItem(Agent agent, Item item) {
 		agent.setItemInPossession(item);
 	}
+	
+	public void leaveItem(Agent agent, Square destination) {
+		int nextX = destination.getPosition().getX();
+		int nextY = destination.getPosition().getY();
+		this.grid.get(nextY).get(nextX).setObject(agent.getItemInPosition());	
+		
+		agent.setItemInPossession(null);
+	}
 
 	/**
 	 * Initialisation : Positionnement des agents sur la grille

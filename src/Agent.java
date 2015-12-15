@@ -14,7 +14,6 @@ public class Agent {
 	private ArrayList<Square> neighborhood;
 	private Item itemInPossession;
 	private int moveStep;
-	private int shortTermMemorySize;
 
 	public ArrayList<Square> getNeighborhood() {
 		return neighborhood;
@@ -29,9 +28,7 @@ public class Agent {
 		this.setEnvironment(environment);
 		this.neighborhood = new ArrayList<Square>(4);
 		this.shortTermMemory = new Stack<String>();
-		this.initMemory();
-		System.out.println("test");
-		
+		this.initMemory();		
 	}
 	
 	public void initMemory() {
@@ -69,25 +66,28 @@ public class Agent {
 		}
 
 		// Si le voisin est null
-		/*if (neighbor.getClass() == null) {
+		if (neighbor.getClass() == null) {
+			leave(neighbor);
+			
+			/*
 			// Si on a un item en main
 			if (this.itemInPossession != null) {
 				leave(neighbor);
 			} else {
 				this.environment.moveAgent(this, neighbor);
-			}
-		}*/
+			}*/
+		}
 
-		/*if (shortTermMemory.size() >= SIZE_MEMORY) {
+		if (isShortMemoryFull()) {
 			shortTermMemory.remove(0);
 		}
 
-		if (hasItemInPossession() && neighbor.getObject().getClass().equals(Item.class)) {
+		if (hasItemInPossession() && neighbor.getObject() != null && neighbor.getObject().getClass().equals(Item.class)) {
 			Item item = (Item) neighbor.getObject();
 			shortTermMemory.add(item.getLabel());
 		} else {
 			shortTermMemory.add("0");
-		}*/
+		}
 	}
 
 	public void take(Square destination) {
@@ -116,8 +116,10 @@ public class Agent {
 			double rand = r.nextDouble();
 
 			if (rand <= probLeave) {
-				this.setItemInPossession(null);
-				// environment.move();
+				this.environment.leaveItem(this, destination);
+				this.environment.moveAgent(this, destination);
+			} else {
+				this.environment.moveAgent(this, destination);
 			}
 		}
 	}
@@ -193,7 +195,7 @@ public class Agent {
 	}
 
 	private boolean isShortMemoryFull() {
-		return this.shortTermMemory.size() == shortTermMemorySize;
+		return this.shortTermMemory.size() == SIZE_MEMORY;
 	}
 
 	public String getName() {
