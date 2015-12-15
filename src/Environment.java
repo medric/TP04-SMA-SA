@@ -164,6 +164,8 @@ public class Environment {
 
 		Random r = new Random();
 
+		
+		
 		int randI = r.nextInt(gridWidth);
 		int randJ = r.nextInt(gridHeight);
 

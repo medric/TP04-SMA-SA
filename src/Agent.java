@@ -69,21 +69,20 @@ public class Agent {
 			leave(neighbor);
 		}
 
-		if (isShortMemoryFull()) {
-			shortTermMemory.remove(0);
-		}
-
 		if (hasItemInPossession() && neighbor.getObject() != null && neighbor.getObject().getClass().equals(Item.class)) {
 			Item item = (Item) neighbor.getObject();
+			shortTermMemory.remove(0);
 			shortTermMemory.add(item.getLabel());
 		} else {
+			shortTermMemory.remove(0);
 			shortTermMemory.add("0");
 		}
 	}
 
 	public void take(Square destination) {
 		if (!hasItemInPossession()) {
-			double probTake = K_PLUS / (K_PLUS + getProportionOfItemInShortMemory("A"));
+			Item item = (Item) destination.getObject();
+			double probTake = K_PLUS / (K_PLUS + getProportionOfItemInShortMemory(item.getLabel()));
 			probTake *= probTake;
 
 			Random r = new Random();
@@ -91,7 +90,6 @@ public class Agent {
 
 			if (rand <= probTake) {
 				this.setItemInPossession((Item) destination.getObject());
-				Item item = (Item) destination.getObject();
 				this.environment.takeItem(this, item);
 				this.environment.moveAgent(this, destination);
 			}
@@ -100,7 +98,7 @@ public class Agent {
 
 	public void leave(Square destination) {
 		if (hasItemInPossession()) {
-			double probLeave = getProportionOfItemNeighborhood("A") / (K_MINUS + getProportionOfItemNeighborhood("A"));
+			double probLeave = getProportionOfItemNeighborhood(this.getItemInPosition().getLabel()) / (K_MINUS + getProportionOfItemNeighborhood(this.getItemInPosition().getLabel()));
 			probLeave *= probLeave;
 
 			Random r = new Random();
@@ -177,10 +175,6 @@ public class Agent {
 		Random r = new Random();
 		int index = r.nextInt(this.neighborhood.size());
 		return neighborhood.get(index);
-	}
-
-	private boolean isShortMemoryFull() {
-		return this.shortTermMemory.size() == SIZE_MEMORY;
 	}
 
 	public String getName() {

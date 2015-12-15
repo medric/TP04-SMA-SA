@@ -8,7 +8,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		//Environment environment = new Environment(50, 50, 20, 200);
-		Environment environment = new Environment(10, 10, 6, 3);
+		Environment environment = new Environment(8, 8, 4, 8);
 		System.out.println("Environnement initiale :");
 		environment.render();
 		for (int k = 0; k < 100000; k++) {
