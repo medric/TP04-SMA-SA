@@ -6,6 +6,7 @@ public class Agent {
 	private static final double K_PLUS = 0.1;
 	private static final double K_MINUS = 0.3;
 	private static final int SIZE_MEMORY = 9;
+	private static final int NUMBER_NEIGHBOR = 4;
 
 	private String name;
 	private Environment environment;
@@ -26,7 +27,14 @@ public class Agent {
 		this.name = name;
 		this.setEnvironment(environment);
 		this.neighborhood = new ArrayList<Square>(4);
-		this.shortTermMemory = new Stack<String>();	
+		this.shortTermMemory = new Stack<String>();
+		this.initMemory();
+	}
+	
+	public void initMemory() {
+		for (int i = 0; i <= SIZE_MEMORY; i++) {
+			this.shortTermMemory.add("0");
+		}
 	}
 
 	public Environment getEnvironment() {
@@ -58,11 +66,11 @@ public class Agent {
 		} else {
 			shortTermMemory.add("0");
 		}
-		
-		if(shortTermMemory.size() >= SIZE_MEMORY) {
+
+		if (shortTermMemory.size() >= SIZE_MEMORY) {
 			shortTermMemory.remove(0);
 		}
-		
+
 		// Si le voisin est un item et que l'agent n'a pas d'item en main
 		if (neighbor.getObject() != null && neighbor.getObject().getClass().equals(Item.class)) {
 			take(neighbor);
@@ -95,10 +103,9 @@ public class Agent {
 
 	public void leave(Square destination) {
 		if (hasItemInPossession()) {
-			//double fd = getProportionOfItemNeighborhood(this.getItemInPosition().getLabel());
-			double fd = 1;
+			double fd = getProportionOfItemNeighborhood(this.getItemInPosition().getLabel());
 			double probLeave = fd / (K_MINUS + fd);
-			System.out.println("FDDDD : "+ fd);
+			System.out.println("FDDDD : " + fd);
 			probLeave *= probLeave;
 
 			Random r = new Random();
@@ -150,12 +157,8 @@ public class Agent {
 				count++;
 			}
 		}
-		
-		if (shortTermMemory.size() != 0) {
-			return count / shortTermMemory.size();
-		}else {
-			return 0;
-		}
+
+		return count / shortTermMemory.size();
 	}
 
 	private double getProportionOfItemNeighborhood(String label) {
@@ -171,11 +174,7 @@ public class Agent {
 			}
 		}
 
-		if (neighborhood.size() != 0) {
-			return count / neighborhood.size();
-		}else {
-			return 0;
-		}
+		return count / NUMBER_NEIGHBOR;
 	}
 
 	private Square getRandomNeighbor() {
