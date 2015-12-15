@@ -53,9 +53,17 @@ public class Agent {
 	public void move() {
 		Square neighbor = getRandomNeighbor();
 
-		// If place is free
+		// If place is free -> move
 		if(neighbor.getObject() == null) {
 			this.environment.moveAgent(this, neighbor);
+			
+			// TODO : bouger ou déposer l'objet ?
+			//  leave(neighbor) ? --> random
+		}
+		
+		// If Agent
+		if (neighbor.getObject() != null && neighbor.getObject().getClass().equals(Agent.class)) {
+			// TODO : ne rien faire ?
 		}
 		
 		// If Item
