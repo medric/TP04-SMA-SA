@@ -95,7 +95,8 @@ public class Agent {
 
 	public void leave(Square destination) {
 		if (hasItemInPossession()) {
-			double fd = getProportionOfItemNeighborhood(this.getItemInPosition().getLabel());
+			//double fd = getProportionOfItemNeighborhood(this.getItemInPosition().getLabel());
+			double fd = 1;
 			double probLeave = fd / (K_MINUS + fd);
 			System.out.println("FDDDD : "+ fd);
 			probLeave *= probLeave;
@@ -105,7 +106,6 @@ public class Agent {
 
 			if (rand <= probLeave) {
 				this.environment.leaveItem(this, destination);
-				this.environment.moveAgent(this, destination);
 			} else {
 				this.environment.moveAgent(this, destination);
 			}
