@@ -8,10 +8,10 @@ public class Main {
 	public static void main(String[] args) {
 
 		//Environment environment = new Environment(50, 50, 20, 200);
-		Environment environment = new Environment(8, 8, 4, 8);
+		Environment environment = new Environment(4, 4, 2, 2);
 		System.out.println("Environnement initiale :");
 		environment.render();
-		for (int k = 0; k < 100000; k++) {
+		for (int k = 0; k < 100; k++) {
 			Random rand = new Random();
 			int randStack = rand.nextInt(environment.getAgents().size());
 			environment.applyPerception(environment.getAgents().get(randStack));

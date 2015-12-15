@@ -26,14 +26,7 @@ public class Agent {
 		this.name = name;
 		this.setEnvironment(environment);
 		this.neighborhood = new ArrayList<Square>(4);
-		this.shortTermMemory = new Stack<String>();
-		this.initMemory();		
-	}
-	
-	public void initMemory() {
-		for (int i = 0; i <= SIZE_MEMORY; i++) {
-			shortTermMemory.add("0");
-		}
+		this.shortTermMemory = new Stack<String>();	
 	}
 
 	public Environment getEnvironment() {
@@ -59,6 +52,17 @@ public class Agent {
 	public void move() {
 		Square neighbor = getRandomNeighbor();
 
+		if (hasItemInPossession() && neighbor.getObject() != null && neighbor.getObject().getClass().equals(Item.class)) {
+			Item item = (Item) neighbor.getObject();
+			shortTermMemory.add(item.getLabel());
+		} else {
+			shortTermMemory.add("0");
+		}
+		
+		if(shortTermMemory.size() >= SIZE_MEMORY) {
+			shortTermMemory.remove(0);
+		}
+		
 		// Si le voisin est un item et que l'agent n'a pas d'item en main
 		if (neighbor.getObject() != null && neighbor.getObject().getClass().equals(Item.class)) {
 			take(neighbor);
@@ -68,21 +72,14 @@ public class Agent {
 		if (neighbor.getObject() == null) {
 			leave(neighbor);
 		}
-
-		if (hasItemInPossession() && neighbor.getObject() != null && neighbor.getObject().getClass().equals(Item.class)) {
-			Item item = (Item) neighbor.getObject();
-			shortTermMemory.remove(0);
-			shortTermMemory.add(item.getLabel());
-		} else {
-			shortTermMemory.remove(0);
-			shortTermMemory.add("0");
-		}
 	}
 
 	public void take(Square destination) {
 		if (!hasItemInPossession()) {
 			Item item = (Item) destination.getObject();
-			double probTake = K_PLUS / (K_PLUS + getProportionOfItemInShortMemory(item.getLabel()));
+			double fp = getProportionOfItemInShortMemory(item.getLabel());
+			System.out.println("FP : " + fp);
+			double probTake = K_PLUS / (K_PLUS + fp);
 			probTake *= probTake;
 
 			Random r = new Random();
@@ -98,7 +95,9 @@ public class Agent {
 
 	public void leave(Square destination) {
 		if (hasItemInPossession()) {
-			double probLeave = getProportionOfItemNeighborhood(this.getItemInPosition().getLabel()) / (K_MINUS + getProportionOfItemNeighborhood(this.getItemInPosition().getLabel()));
+			double fd = getProportionOfItemNeighborhood(this.getItemInPosition().getLabel());
+			double probLeave = fd / (K_MINUS + fd);
+			System.out.println("FD : "+ fd);
 			probLeave *= probLeave;
 
 			Random r = new Random();
@@ -151,8 +150,12 @@ public class Agent {
 				count++;
 			}
 		}
-
-		return count / shortTermMemory.size();
+		
+		if (shortTermMemory.size() != 0) {
+			return count / shortTermMemory.size();
+		}else {
+			return 1;
+		}
 	}
 
 	private double getProportionOfItemNeighborhood(String label) {
@@ -168,7 +171,11 @@ public class Agent {
 			}
 		}
 
-		return count / neighborhood.size();
+		if (shortTermMemory.size() != 0) {
+			return count / shortTermMemory.size();
+		}else {
+			return 1;
+		}
 	}
 
 	private Square getRandomNeighbor() {
