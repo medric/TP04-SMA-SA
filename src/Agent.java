@@ -52,7 +52,7 @@ public class Agent {
 	public void move() {
 		Square neighbor = getRandomNeighbor();
 
-		if (hasItemInPossession() && neighbor.getObject() != null && neighbor.getObject().getClass().equals(Item.class)) {
+		if (neighbor.getObject() != null && neighbor.getObject().getClass().equals(Item.class)) {
 			Item item = (Item) neighbor.getObject();
 			shortTermMemory.add(item.getLabel());
 		} else {
@@ -97,7 +97,7 @@ public class Agent {
 		if (hasItemInPossession()) {
 			double fd = getProportionOfItemNeighborhood(this.getItemInPosition().getLabel());
 			double probLeave = fd / (K_MINUS + fd);
-			System.out.println("FD : "+ fd);
+			System.out.println("FDDDD : "+ fd);
 			probLeave *= probLeave;
 
 			Random r = new Random();
@@ -154,7 +154,7 @@ public class Agent {
 		if (shortTermMemory.size() != 0) {
 			return count / shortTermMemory.size();
 		}else {
-			return 1;
+			return 0;
 		}
 	}
 
@@ -171,10 +171,10 @@ public class Agent {
 			}
 		}
 
-		if (shortTermMemory.size() != 0) {
-			return count / shortTermMemory.size();
+		if (neighborhood.size() != 0) {
+			return count / neighborhood.size();
 		}else {
-			return 1;
+			return 0;
 		}
 	}
 
