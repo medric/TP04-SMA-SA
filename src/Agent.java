@@ -23,20 +23,6 @@ public class Agent {
 		this.neighborhood = neighborhood;
 	}
 
-	public Agent(Environment environment, String name) {
-		this.name = name;
-		this.setEnvironment(environment);
-		this.neighborhood = new ArrayList<Square>(4);
-		this.shortTermMemory = new Stack<String>();
-		this.initMemory();
-	}
-	
-	public void initMemory() {
-		for (int i = 0; i <= SIZE_MEMORY; i++) {
-			this.shortTermMemory.add("0");
-		}
-	}
-
 	public Environment getEnvironment() {
 		return environment;
 	}
@@ -53,8 +39,51 @@ public class Agent {
 		this.shortTermMemory = shortTermMemory;
 	}
 
+	public Square getCurrentSquare() {
+		return this.currentSquare;
+	}
+
+	public void setCurrentSquare(Square currentSquare) {
+		this.currentSquare = currentSquare;
+		this.currentSquare.setObject(this);
+	}
+
+	public Item getItemInPosition() {
+		return itemInPossession;
+	}
+
+	public void setItemInPossession(Item itemInPossession) {
+		this.itemInPossession = itemInPossession;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Agent(Environment environment, String name) {
+		this.name = name;
+		this.setEnvironment(environment);
+		this.neighborhood = new ArrayList<Square>(4);
+		this.shortTermMemory = new Stack<String>();
+		this.initMemory();
+	}
+
 	public void perceive() {
 		this.environment.applyPerception(this);
+	}
+	
+	private void initMemory() {
+		for (int i = 0; i <= SIZE_MEMORY; i++) {
+			this.shortTermMemory.add("0");
+		}
+	}
+
+	private boolean hasItemInPossession() {
+		return this.itemInPossession != null;
 	}
 
 	public void move() {
@@ -71,7 +100,7 @@ public class Agent {
 			shortTermMemory.remove(0);
 		}
 
-		// Si le voisin est un item et que l'agent n'a pas d'item en main
+		// Si le voisin est un item et que l'agent n'a pas d'item
 		if (neighbor.getObject() != null && neighbor.getObject().getClass().equals(Item.class)) {
 			take(neighbor);
 		}
@@ -82,7 +111,7 @@ public class Agent {
 		}
 	}
 
-	public void take(Square destination) {
+	private void take(Square destination) {
 		if (!hasItemInPossession()) {
 			Item item = (Item) destination.getObject();
 			double fp = getProportionOfItemInShortMemory(item.getLabel());
@@ -101,7 +130,7 @@ public class Agent {
 		}
 	}
 
-	public void leave(Square destination) {
+	private void leave(Square destination) {
 		if (hasItemInPossession()) {
 			double fd = getProportionOfItemNeighborhood(this.getItemInPosition().getLabel());
 			double probLeave = fd / (K_MINUS + fd);
@@ -121,33 +150,10 @@ public class Agent {
 		}
 	}
 
-	public void addElementToMemory(String label) {
-		this.shortTermMemory.add(label);
-	}
-
-	public void removeElementToMemory(String label) {
-		this.shortTermMemory.remove(label);
-	}
-
-	public void setCurrentSquare(Square currentSquare) {
-		this.currentSquare = currentSquare;
-		this.currentSquare.setObject(this);
-	}
-
-	public Square getCurrentSquare() {
-		return this.currentSquare;
-	}
-
-	public Item getItemInPosition() {
-		return itemInPossession;
-	}
-
-	public void setItemInPossession(Item itemInPossession) {
-		this.itemInPossession = itemInPossession;
-	}
-
-	public boolean hasItemInPossession() {
-		return this.itemInPossession != null;
+	private Square getRandomNeighbor() {
+		Random r = new Random();
+		int index = r.nextInt(this.neighborhood.size());
+		return neighborhood.get(index);
 	}
 
 	private double getProportionOfItemInShortMemory(String label) {
@@ -175,19 +181,5 @@ public class Agent {
 		}
 
 		return count / NUMBER_NEIGHBOR;
-	}
-
-	private Square getRandomNeighbor() {
-		Random r = new Random();
-		int index = r.nextInt(this.neighborhood.size());
-		return neighborhood.get(index);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 }
