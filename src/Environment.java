@@ -46,7 +46,7 @@ public class Environment {
 	private void initAgents(int nbAgents) {
 		for (int i = 0; i < nbAgents; i++) {
 			String name = "Agent_" + i;
-			Agent agent = new Agent(this, 10, name);
+			Agent agent = new Agent(this, name);
 			getAgents().add(agent);
 		}
 	}
@@ -74,6 +74,10 @@ public class Environment {
 		
 		agent.setCurrentSquare(destination);
 		this.grid.get(nextY).get(nextX).setObject(agent);	
+	}
+	
+	public void takeItem(Agent agent, Item item) {
+		agent.setItemInPossession(item);
 	}
 
 	/**

@@ -1,9 +1,5 @@
 import java.util.Random;
 
-/**
- * @author medric
- *
- */
 public class Main {
 
 	/**

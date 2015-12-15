@@ -1,14 +1,16 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Stack;
 
 public class Agent {
 	private static final double K_PLUS = 0.1;
 	private static final double K_MINUS = 0.3;
+	private static final int SIZE_MEMORY = 9;
 
 	private String name;
 	private Environment environment;
 	private Square currentSquare;
-	private ArrayList<String> shortTermMemory;
+	private Stack<String> shortTermMemory;
 	private ArrayList<Square> neighborhood;
 	private Item itemInPossession;
 	private int moveStep;
@@ -22,12 +24,20 @@ public class Agent {
 		this.neighborhood = neighborhood;
 	}
 
-	public Agent(Environment environment, int shortTermMemorySize, String name) {
+	public Agent(Environment environment, String name) {
 		this.name = name;
 		this.setEnvironment(environment);
-		this.shortTermMemorySize = shortTermMemorySize;
-		this.shortTermMemory = new ArrayList<String>(shortTermMemorySize);
 		this.neighborhood = new ArrayList<Square>(4);
+		this.shortTermMemory = new Stack<String>();
+		this.initMemory();
+		System.out.println("test");
+		
+	}
+	
+	public void initMemory() {
+		for (int i = 0; i <= SIZE_MEMORY; i++) {
+			shortTermMemory.add("0");
+		}
 	}
 
 	public Environment getEnvironment() {
@@ -38,11 +48,11 @@ public class Agent {
 		this.environment = environment;
 	}
 
-	public ArrayList<String> getShortTermMemory() {
+	public Stack<String> getShortTermMemory() {
 		return shortTermMemory;
 	}
 
-	public void setShortTermMemory(ArrayList<String> shortTermMemory) {
+	public void setShortTermMemory(Stack<String> shortTermMemory) {
 		this.shortTermMemory = shortTermMemory;
 	}
 
@@ -53,39 +63,35 @@ public class Agent {
 	public void move() {
 		Square neighbor = getRandomNeighbor();
 
-		// If place is free -> move
-		if(neighbor.getObject() == null) {
-			this.environment.moveAgent(this, neighbor);
-			
-			// TODO : bouger ou déposer l'objet ?
-			//  leave(neighbor) ? --> random
-		}
-		
-		// If Agent
-		if (neighbor.getObject() != null && neighbor.getObject().getClass().equals(Agent.class)) {
-			// TODO : ne rien faire ?
-		}
-		
-		// If Item
-		/*if (neighbor.getObject() != null && neighbor.getObject().getClass().equals(Item.class)) {
+		// Si le voisin est un item et que l'agent n'a pas d'item en main
+		if (neighbor.getObject() != null && neighbor.getObject().getClass().equals(Item.class)) {
 			take(neighbor);
-		} else if (neighbor.isFree()) { // If neighbor square is free try to
-										// leave Item in possession
-			leave(neighbor);
+		}
+
+		// Si le voisin est null
+		/*if (neighbor.getClass() == null) {
+			// Si on a un item en main
+			if (this.itemInPossession != null) {
+				leave(neighbor);
+			} else {
+				this.environment.moveAgent(this, neighbor);
+			}
 		}*/
-		
-		// If Agent ? ne rien faire ?
-		
-		// TODO : gestion pile mémoire
-		/*if (hasItemItemInPossession()) {
-			shortTermMemory.add(itemInPossession.getLabel());
+
+		/*if (shortTermMemory.size() >= SIZE_MEMORY) {
+			shortTermMemory.remove(0);
+		}
+
+		if (hasItemInPossession() && neighbor.getObject().getClass().equals(Item.class)) {
+			Item item = (Item) neighbor.getObject();
+			shortTermMemory.add(item.getLabel());
 		} else {
 			shortTermMemory.add("0");
 		}*/
 	}
 
 	public void take(Square destination) {
-		if (!hasItemItemInPossession()) {
+		if (!hasItemInPossession()) {
 			double probTake = K_PLUS / (K_PLUS + getProportionOfItemInShortMemory("A"));
 			probTake *= probTake;
 
@@ -94,13 +100,15 @@ public class Agent {
 
 			if (rand <= probTake) {
 				this.setItemInPossession((Item) destination.getObject());
-				//environment.move();
+				Item item = (Item) destination.getObject();
+				this.environment.takeItem(this, item);
+				this.environment.moveAgent(this, destination);
 			}
 		}
 	}
 
 	public void leave(Square destination) {
-		if (hasItemItemInPossession()) {
+		if (hasItemInPossession()) {
 			double probLeave = getProportionOfItemNeighborhood("A") / (K_MINUS + getProportionOfItemNeighborhood("A"));
 			probLeave *= probLeave;
 
@@ -109,7 +117,7 @@ public class Agent {
 
 			if (rand <= probLeave) {
 				this.setItemInPossession(null);
-				//environment.move();
+				// environment.move();
 			}
 		}
 	}
@@ -139,7 +147,7 @@ public class Agent {
 		this.itemInPossession = itemInPossession;
 	}
 
-	public boolean hasItemItemInPossession() {
+	public boolean hasItemInPossession() {
 		return this.itemInPossession != null;
 	}
 
