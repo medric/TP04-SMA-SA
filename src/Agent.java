@@ -115,7 +115,6 @@ public class Agent {
 		if (!hasItemInPossession()) {
 			Item item = (Item) destination.getObject();
 			double fp = getProportionOfItemInShortMemory(item.getLabel());
-			System.out.println("FP : " + fp);
 			double probTake = K_PLUS / (K_PLUS + fp);
 			probTake *= probTake;
 
@@ -134,7 +133,6 @@ public class Agent {
 		if (hasItemInPossession()) {
 			double fd = getProportionOfItemNeighborhood(this.getItemInPosition().getLabel());
 			double probLeave = fd / (K_MINUS + fd);
-			System.out.println("FDDDD : " + fd);
 			probLeave *= probLeave;
 
 			Random r = new Random();
@@ -157,7 +155,7 @@ public class Agent {
 	}
 
 	private double getProportionOfItemInShortMemory(String label) {
-		int count = 0;
+		double count = 0;
 		for (int i = 0; i < shortTermMemory.size(); i++) {
 			if (shortTermMemory.get(i).equals(label)) {
 				count++;
@@ -168,7 +166,7 @@ public class Agent {
 	}
 
 	private double getProportionOfItemNeighborhood(String label) {
-		int count = 0;
+		double count = 0;
 		for (int i = 0; i < neighborhood.size(); i++) {
 			Object obj = neighborhood.get(i).getObject();
 			if (obj != null && obj.getClass().equals(Item.class)) {
