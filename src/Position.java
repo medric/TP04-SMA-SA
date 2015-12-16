@@ -4,11 +4,6 @@ public class Position {
 	private int x;
 	private int y;
 	
-	public Position(int x, int y) {
-		this.setX(x);
-		this.setY(y);
-	}
-	
 	/**
 	 * @return the x
 	 */
@@ -34,5 +29,13 @@ public class Position {
 		this.y = y;
 	}
 	
-	
+	/**
+	 * Position
+	 * @param x
+	 * @param y
+	 */
+	public Position(int x, int y) {
+		this.setX(x);
+		this.setY(y);
+	}	
 }

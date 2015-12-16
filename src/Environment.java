@@ -8,9 +8,29 @@ public class Environment {
 	private int gridWidth;
 	private int gridHeight;
 
+	public int getGridWidth() {
+		return this.grid.size();
+	}
+
+	public int getGridHeight() {
+		return this.grid.get(0).size();
+	}
+
+	public ArrayList<Agent> getAgents() {
+		return agents;
+	}
+
+	public void setAgents(ArrayList<Agent> agents) {
+		this.agents = agents;
+	}
+
 	/**
+	 * Environment
 	 * 
-	 * @param nbStacks
+	 * @param gridWith
+	 * @param gridHeight
+	 * @param nbAgents
+	 * @param nbItems
 	 */
 	public Environment(int gridWith, int gridHeight, int nbAgents, int nbItems) {
 		this.gridWidth = gridWith;
@@ -31,6 +51,9 @@ public class Environment {
 		this.placeItems();
 	}
 
+	/**
+	 * Initialize the grid with square
+	 */
 	private void initGrid() {
 		for (int i = 0; i < gridHeight; i++) {
 			ArrayList<Square> columns = new ArrayList<Square>(gridWidth);
@@ -43,6 +66,11 @@ public class Environment {
 		}
 	}
 
+	/**
+	 * Initialize the agents
+	 * 
+	 * @param nbAgents
+	 */
 	private void initAgents(int nbAgents) {
 		for (int i = 0; i < nbAgents; i++) {
 			Agent agent = new Agent(this, i);
@@ -50,6 +78,12 @@ public class Environment {
 		}
 	}
 
+	/**
+	 * Initialize the items
+	 * 
+	 * @param nbItems
+	 * @param label
+	 */
 	private void initItems(int nbItems, String label) {
 		for (int i = 0; i < nbItems; i++) {
 			Item item = new Item(label);
@@ -57,11 +91,22 @@ public class Environment {
 		}
 	}
 
+	/**
+	 * Apply perception
+	 * 
+	 * @param agent
+	 */
 	public void applyPerception(Agent agent) {
 		agent.setNeighborhood(getNeighbors(agent.getCurrentSquare()));
 		agent.move();
 	}
 
+	/**
+	 * Move Agent
+	 * 
+	 * @param agent
+	 * @param destination
+	 */
 	public void moveAgent(Agent agent, Square destination) {
 		int nextX = destination.getPosition().getX();
 		int nextY = destination.getPosition().getY();
@@ -75,10 +120,22 @@ public class Environment {
 		this.grid.get(nextY).get(nextX).setObject(agent);
 	}
 
+	/**
+	 * Take an item
+	 * 
+	 * @param agent
+	 * @param item
+	 */
 	public void takeItem(Agent agent, Item item) {
 		agent.setItemInPossession(item);
 	}
 
+	/**
+	 * Leave an item
+	 * 
+	 * @param agent
+	 * @param destination
+	 */
 	public void leaveItem(Agent agent, Square destination) {
 		int nextX = destination.getPosition().getX();
 		int nextY = destination.getPosition().getY();
@@ -88,7 +145,7 @@ public class Environment {
 	}
 
 	/**
-	 * Initialisation : Positionnement des agents sur la grille
+	 * Initialize the agents in the grid
 	 */
 	public void placeAgents() {
 		for (Agent agent : getAgents()) {
@@ -107,7 +164,7 @@ public class Environment {
 	}
 
 	/**
-	 * Initialisation : Positionnement des objets sur la grille
+	 * Initialize the items in the grid
 	 */
 	public void placeItems() {
 		for (Item item : items) {
@@ -125,14 +182,11 @@ public class Environment {
 		}
 	}
 
-	public int getGridWidth() {
-		return this.grid.size();
-	}
-
-	public int getGridHeight() {
-		return this.grid.get(0).size();
-	}
-
+	/**
+	 * Get Neighbors
+	 * @param square
+	 * @return
+	 */
 	public ArrayList<Square> getNeighbors(Square square) {
 		ArrayList<Square> neighbors = new ArrayList<Square>();
 
@@ -159,6 +213,10 @@ public class Environment {
 		return neighbors;
 	}
 
+	/**
+	 * Get Random Square
+	 * @return
+	 */
 	private Square getRandomSquare() {
 
 		Random r = new Random();
@@ -202,14 +260,5 @@ public class Environment {
 			}
 			System.out.println();
 		}
-		// System.out.print("---Iteration suivante---");
-	}
-
-	public ArrayList<Agent> getAgents() {
-		return agents;
-	}
-
-	public void setAgents(ArrayList<Agent> agents) {
-		this.agents = agents;
 	}
 }

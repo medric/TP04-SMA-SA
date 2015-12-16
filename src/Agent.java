@@ -63,15 +63,21 @@ public class Agent {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public void setNameWithNum(int num) {
-		if(num < 10) {
+		if (num < 10) {
 			this.name = "Ag_0" + num;
 		} else {
 			this.name = "Ag_" + num;
 		}
 	}
 
+	/**
+	 * Agent
+	 * 
+	 * @param environment
+	 * @param numAgent
+	 */
 	public Agent(Environment environment, int numAgent) {
 		this.setNameWithNum(numAgent);
 		this.setEnvironment(environment);
@@ -80,20 +86,34 @@ public class Agent {
 		this.initMemory();
 	}
 
+	/**
+	 * Perceive
+	 */
 	public void perceive() {
 		this.environment.applyPerception(this);
 	}
-	
+
+	/**
+	 * Initialize the memory with "0"
+	 */
 	private void initMemory() {
 		for (int i = 0; i <= SIZE_MEMORY; i++) {
 			this.shortTermMemory.add("0");
 		}
 	}
 
+	/**
+	 * Has Item In Possession
+	 * 
+	 * @return
+	 */
 	private boolean hasItemInPossession() {
 		return this.itemInPossession != null;
 	}
 
+	/**
+	 * Move agent
+	 */
 	public void move() {
 		Square neighbor = getRandomNeighbor();
 
@@ -104,6 +124,7 @@ public class Agent {
 			shortTermMemory.add("0");
 		}
 
+		// Check if size memory is full
 		if (shortTermMemory.size() >= SIZE_MEMORY) {
 			shortTermMemory.remove(0);
 		}
@@ -119,6 +140,11 @@ public class Agent {
 		}
 	}
 
+	/**
+	 * Take
+	 * 
+	 * @param destination
+	 */
 	private void take(Square destination) {
 		if (!hasItemInPossession()) {
 			Item item = (Item) destination.getObject();
@@ -137,6 +163,11 @@ public class Agent {
 		}
 	}
 
+	/**
+	 * Leave
+	 * 
+	 * @param destination
+	 */
 	private void leave(Square destination) {
 		if (hasItemInPossession()) {
 			double fd = getProportionOfItemNeighborhood(this.getItemInPosition().getLabel());
@@ -156,12 +187,23 @@ public class Agent {
 		}
 	}
 
+	/**
+	 * Get Random Neighbor
+	 * 
+	 * @return
+	 */
 	private Square getRandomNeighbor() {
 		Random r = new Random();
 		int index = r.nextInt(this.neighborhood.size());
 		return neighborhood.get(index);
 	}
 
+	/**
+	 * Get Proportion Of Item In Short Memory
+	 * 
+	 * @param label
+	 * @return
+	 */
 	private double getProportionOfItemInShortMemory(String label) {
 		double count = 0;
 		for (int i = 0; i < shortTermMemory.size(); i++) {
@@ -173,6 +215,12 @@ public class Agent {
 		return count / shortTermMemory.size();
 	}
 
+	/**
+	 * Get Proportion Of Item Neighborhood
+	 * 
+	 * @param label
+	 * @return
+	 */
 	private double getProportionOfItemNeighborhood(String label) {
 		double count = 0;
 		for (int i = 0; i < neighborhood.size(); i++) {

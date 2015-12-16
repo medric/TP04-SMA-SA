@@ -3,10 +3,6 @@ public class Item {
 	private String label;
 	private Square currentSquare;
 	
-	public Item(String label) {
-		this.setLabel(label);
-	}
-	
 	public String getLabel() {
 		return label;
 	}
@@ -22,5 +18,13 @@ public class Item {
 	
 	public Square getCurrentSquare() {
 		return this.currentSquare;
+	}
+	
+	/**
+	 * Item
+	 * @param label
+	 */
+	public Item(String label) {
+		this.setLabel(label);
 	}
 }
